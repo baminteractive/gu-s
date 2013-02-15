@@ -1,7 +1,3 @@
-
-/**
- * Module dependencies.
- */
 var express = require('express')
   , routes = require('./routes')
   , http = require('http')
@@ -40,10 +36,9 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 var job = new cronjob({
-  cronTime: '00 00 02 * * 3',
+  cronTime: '00 33 12 * * *',
   onTick : function(){
     createdatabase.getDatabase();
   },
-  start : true,
-  timeZone : "America/New_York"
+  start : true
 });
