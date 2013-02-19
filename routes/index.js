@@ -27,7 +27,7 @@ exports.index = function(req, res){
 					startThirdOctet : { $lte : parseInt(ipParts[2])}, 
 					endThirdOctet : { $gte : parseInt(ipParts[2])} })
 					.toArray(function(err,items){
-						if(items[0]){
+						if(items != null && items[0]){
 							if(process.env.ENV_VARIABLE != "production"){
 								console.log(items[0]);
 							}
