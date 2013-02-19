@@ -36,7 +36,7 @@ http.createServer(app).listen(app.get('port'), function(){
 });
 
 var job = new cronjob({
-  cronTime: '00 33 12 * * *',
+  cronTime: '0 0 2 * * 3',
   onTick : function(){
     createdatabase.getDatabase();
   },
