@@ -27,18 +27,28 @@ exports.index = function(req, res){
 					startThirdOctet : { $lte : parseInt(ipParts[2])}, 
 					endThirdOctet : { $gte : parseInt(ipParts[2])} })
 					.toArray(function(err,items){
-						if(process.env.ENV_VARIABLE != "production"){
-							console.log(items[0]);
-						}
+						if(items[0]){
+							if(process.env.ENV_VARIABLE != "production"){
+								console.log(items[0]);
+							}
 
-						country = items[0].country;
-						countryabbr = items[0].countryAbbr;					
-						res.json({country:country,abbr:countryabbr,ip:ip});
+							country = items[0].country;
+							countryabbr = items[0].countryAbbr;					
+							res.json({country:country,abbr:countryabbr,ip:ip});
+						}else{
+							console.log("No items could be found for that ip.  [IP:"+ip+"]");
+							sendResponse(res,country,countryabbr,ip);
+						}
 				}); 
 			}
 		});
 	}
 	else{
-		res.json({country:country,abbr:countryabbr,ip:""});
+		sendResponse(res,country,countryabbr,"");
 	}
 };	
+
+
+function sendResponse(res,country,abbr,ip){
+	res.json({country:country,abbr:abbr,ip:ip});
+}
