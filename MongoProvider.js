@@ -5,11 +5,11 @@ var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
 MongoProvider = function(){
-	var host = process.env.mongohost || "localhost";
-	var port = process.env.mongoport || "27017";
-	var user = process.env.mongouser || "";
-	var password = process.env.mongopassword || "";
-	var database = process.env.mongodatabase || "geoip";
+	var host = process.env.mongohost || "ds045097.mongolab.com";
+	var port = process.env.mongoport || "45097";
+	var user = process.env.mongouser || "gus";
+	var password = process.env.mongopassword || "st4rw4rs!";
+	var database = process.env.mongodatabase || "gu-s";
 
 	console.log("Host: " + host + " Port: " + port + " User: " + user + " Database: " + database);
 
