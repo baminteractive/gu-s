@@ -4,9 +4,27 @@ var Server = require('mongodb').Server;
 var BSON = require('mongodb').BSON;
 var ObjectID = require('mongodb').ObjectID;
 
-MongoProvider = function(host,port){
-  this.db = new Db('geoip', new Server(host,port,{auto_reconnect: true}),{w:1});
-  this.db.open(function(){});
+MongoProvider = function(){
+	var host = process.env.mongohost || "localhost";
+	var port = process.env.mongoport || "27017";
+	var user = process.env.mongouser || "";
+	var password = process.env.mongopassword || "";
+	var database = process.env.mongodatabase || "geoip";
+
+	console.log("Host: " + host + " Port: " + port + " User: " + user + " Database: " + database);
+
+  this.db = new Db(database, new Server(host,port,{auto_reconnect: true}),{w:0});
+  this.db.open(function(err,db){
+  	if(err) { return console.dir(err); }
+
+  	if(db){
+  		if(user != ""){
+	  		db.authenticate(user,password,function(err,result){
+	  			if(err){ return console.dir(err); }
+	  		});
+	  	}
+  	}
+  });
 };
 
 MongoProvider.prototype.collection = function(collectionname,callback){
@@ -18,10 +36,11 @@ MongoProvider.prototype.collection = function(collectionname,callback){
 
 MongoProvider.prototype.save = function(countries,callback){
 	this.collection(function(err, collection){
-		if(err) callback(err);
-
+		if(err){ 
+			callback(err)
+		}
 		else{
-			collection.insert(country,function(){
+			collection.insert(country,function(err){
 				callback(null,country);
 			});
 		}

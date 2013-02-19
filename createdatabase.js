@@ -8,16 +8,9 @@ var MongoProvider = require('./MongoProvider').MongoProvider
 var mongo = new MongoProvider('localhost',27017);
 
 exports.getDatabase = function(){
-  
-  console.log("Getting ips");
-
   // See if there is a last downloaded date
   mongo.collection('meta',function(err,collection){
     if(err){ console.dir(err); }
-
-    console.log("Fetching meta data");
-
-    console.log("Meta Count: ",collection.count());
 
     collection.findOne({}, function(err, item){
       if(err) { console.log(err); }
@@ -37,16 +30,9 @@ exports.getDatabase = function(){
   });
 }
 var updateDatabase = function(){
- console.log("Cleaning database");
-
-  /*mongo.connect("mongodb://localhost:27017/geoip",function(err,db){
-    if(err) { return console.log(err); }
-    db.collection('countries').remove(function(){ console.log("database clean"); });
-  });*/
-
   mongo.collection('countries',function(err,collection){
     if(err) { console.dir(err); }
-    collection.remove();
+    collection.remove(function(){});
   }) 
 
   var downloadfile = "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip";
@@ -68,7 +54,6 @@ var updateDatabase = function(){
     path:downloadfile,
     method:'GET'
   }
-  console.log("Making request");
   var request = http.request(options,function(response){
     processResponse(response,filename);
   });
@@ -97,14 +82,12 @@ var processRecord = function(row, index){
       if(err) { console.dir(err); }
       collection.insert(recordToInsert, function(err, result){
         if(err) { console.log(err); }
-        console.log(result);
       });
     });
   }
 
   var processResponse = function(response,filename) {
     var downloadfile = fs.createWriteStream(filename, {'flags': 'a'});
-    console.log("File size " + filename + ": " + response.headers['content-length'] + " bytes.");
 
     response.on('data', function (chunk) {
         dlprogress += chunk.length;
@@ -112,12 +95,10 @@ var processRecord = function(row, index){
     });
     response.on("end", function() {
         downloadfile.end();
-        console.log("Finished downloading " + filename);
 
       fs.createReadStream(filename)
         .pipe(unzip.Extract({path:'output/'})
             .on('close',function(){
-              console.log("Finished extracting archive");
               csv().from.stream(fs.createReadStream('./output/GeoIPCountryWhois.csv'))
                 .on('record',processRecord)
                 .on('end', function(count){
