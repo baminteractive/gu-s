@@ -32,13 +32,5 @@ app.get('/', routes.index);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
-  createdatabase.getDatabase();
 });
 
-var job = new cronjob({
-  cronTime: '0 0 2 * * 3',
-  onTick : function(){
-    createdatabase.getDatabase();
-  },
-  start : true
-});

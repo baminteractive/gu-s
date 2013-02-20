@@ -5,17 +5,24 @@ var MongoProvider = require('./MongoProvider').MongoProvider
   , url = require('url')
   , csv = require('csv');  
 
+console.log("Getting Mongo Collection");
 var mongo = new MongoProvider('localhost',27017);
 
-exports.getDatabase = function(){
+
+
+console.log("Get Database");
+
+function getdatabase(){
   // See if there is a last downloaded date
   mongo.collection('meta',function(err,collection){
     if(err){ console.dir(err); }
 
+    console.log("Got meta collection");
     collection.findOne({}, function(err, item){
       if(err) { console.log(err); }
 
       if(item){
+        console.log("Found meta item");
         var thresholddate = new Date(); // Set to today
         thresholddate.setDate(thresholddate.getDate() - 5); // Roll back date to 5 days, our threshold
 
@@ -30,11 +37,14 @@ exports.getDatabase = function(){
   });
 }
 var updateDatabase = function(){
+  console.log("starting to update database");
   mongo.collection('countries',function(err,collection){
     if(err) { console.dir(err); }
+    console.log("Cleaning countries collection");
     collection.remove(function(){});
   }) 
 
+  console.log("Getting geo data");
   var downloadfile = "http://geolite.maxmind.com/download/geoip/database/GeoIPCountryCSV.zip";
 
   if(fs.existsSync('GeoIPCountryCSV.zip')){
@@ -95,15 +105,18 @@ var processRecord = function(row, index){
     });
     response.on("end", function() {
         downloadfile.end();
+        console.log("Download has finished");
 
       fs.createReadStream(filename)
         .pipe(unzip.Extract({path:'output/'})
             .on('close',function(){
+              console.log("File has been unarchived");
               csv().from.stream(fs.createReadStream('./output/GeoIPCountryWhois.csv'))
                 .on('record',processRecord)
                 .on('end', function(count){
-                  console.log("Number of rows: "+count);
+                  console.log("Processed "+ count + " records");
                   mongo.collection('meta',function(err,collection){
+                    console.log("Updating meta record");
                     // Check if there is already a record
                     collection.findOne({},function(err,item){
                       var updateItem = item || {};
@@ -122,3 +135,5 @@ var processRecord = function(row, index){
     });
 
   }
+
+getdatabase();
