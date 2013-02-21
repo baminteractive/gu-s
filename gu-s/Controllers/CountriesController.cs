@@ -25,9 +25,6 @@ namespace gu_s.Controllers
                 var ipStringParts = ip.Split('.').ToList();
                 var ipParts = ipStringParts.Select(i => Convert.ToInt32(i)).ToArray();
                 var firstOctet = ipParts[0];
-                var secondOctet = ipParts[1];
-                var thirdOctet = ipParts[2];
-
 
                 var search = (from country in _db.Countries
                              where country.StartFirstOctet <= firstOctet
@@ -45,29 +42,31 @@ namespace gu_s.Controllers
 
                 return Request.CreateResponse(HttpStatusCode.NoContent);
             }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
         // POST api/test
         [HttpPost]
         public HttpResponseMessage PostCountry(Country country)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _db.Countries.Add(country);
-                _db.SaveChanges();
+                if (ModelState.IsValid)
+                {
+                    _db.Countries.Add(country);
+                    _db.SaveChanges();
 
-                var response = Request.CreateResponse(HttpStatusCode.Created, country);
+                    var response = Request.CreateResponse(HttpStatusCode.Created, country);
 
-                return response;
+                    return response;
+                }
+
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
             }
-
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            catch (Exception exception)
+            {
+                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+            }
         }
 
     }
