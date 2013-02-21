@@ -40,7 +40,7 @@ namespace gu_s.Controllers
                     }
                 }
 
-                return Request.CreateResponse(HttpStatusCode.NoContent);
+                return Request.CreateResponse(HttpStatusCode.BadRequest,"No Results");
             }
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
