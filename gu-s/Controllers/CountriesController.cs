@@ -4,14 +4,14 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Web.Http;
-using gu_s.Models;
+using gu_s.Services;
 using gu_s.Utilities;
 
 namespace gu_s.Controllers
 {
     public class CountriesController : ApiController
     {
-        private readonly GusContext _db = new GusContext();
+        private MongoRepository _db = new MongoRepository();
 
         // GET api/countries/5
         public HttpResponseMessage Get(string ip)
@@ -26,10 +26,12 @@ namespace gu_s.Controllers
                 var ipParts = ipStringParts.Select(i => Convert.ToInt32(i)).ToArray();
                 var firstOctet = ipParts[0];
 
-                var search = (from country in _db.Countries
+               /* var search = (from country in _db.Countries
                              where country.StartFirstOctet <= firstOctet
                                    && country.EndFirstOctet >= firstOctet
-                             select country);
+                             select country);*/
+
+                var search = _db.Search(c => c.StartFirstOctet <= firstOctet && c.EndFirstOctet >= firstOctet);
 
                 foreach (var country in search)
                 {

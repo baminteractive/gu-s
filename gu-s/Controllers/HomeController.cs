@@ -10,16 +10,14 @@ namespace gu_s.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly GusContext _db = new GusContext();
-
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Status()
+        /*public ActionResult Status()
         {
             return View(new StatusViewModel(_db.Countries.Count()));
-        }
+        }*/
     }
 }

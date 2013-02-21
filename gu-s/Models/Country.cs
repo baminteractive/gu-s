@@ -1,8 +1,13 @@
-﻿namespace gu_s.Models
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
+namespace gu_s.Models
 {
     public class Country
     {
-        public int CountryId { get; set; }
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string CountryId { get; set; }
         public string StartAddress { get; set; }
         public string EndAddress { get; set; }
         public int StartFirstOctet { get; set; }
