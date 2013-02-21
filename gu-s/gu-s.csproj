@@ -176,6 +176,7 @@
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\GusContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\IpAddressRange.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
