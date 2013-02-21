@@ -61,11 +61,11 @@ namespace gu_s.Controllers
                     return response;
                 }
 
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.BadRequest,"Errors with model");
             }
             catch (Exception exception)
             {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError);
+                return Request.CreateResponse(HttpStatusCode.InternalServerError,exception.Message);
             }
         }
 
