@@ -45,29 +45,5 @@ namespace gu_s.Controllers
             return Request.CreateResponse(HttpStatusCode.BadRequest);
         }
 
-        // POST api/test
-        [HttpPost]
-        public HttpResponseMessage PostCountry(Country country)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    _db.Countries.Add(country);
-                    _db.SaveChanges();
-
-                    var response = Request.CreateResponse(HttpStatusCode.Created, country);
-
-                    return response;
-                }
-
-                return Request.CreateResponse(HttpStatusCode.BadRequest,"Errors with model");
-            }
-            catch (Exception exception)
-            {
-                return Request.CreateResponse(HttpStatusCode.InternalServerError,exception.Message);
-            }
-        }
-
     }
 }
