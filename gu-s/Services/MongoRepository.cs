@@ -19,7 +19,7 @@ namespace gu_s.Services
             var connectionString = ConfigurationManager.ConnectionStrings["GusDatabase"].ToString();
             var client = new MongoClient(connectionString);
             var server = client.GetServer();
-            var database = server.GetDatabase("geoip");
+            var database = server.GetDatabase(ConfigurationManager.AppSettings["DatabaseName"]);
            _countryCollection = database.GetCollection<Country>("countries");
         }
 
