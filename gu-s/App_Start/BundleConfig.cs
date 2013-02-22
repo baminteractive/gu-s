@@ -23,7 +23,7 @@ namespace gu_s
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").IncludeDirectory("~/Content/css","*.css"));
+            bundles.Add(new StyleBundle("~/cdn/css").IncludeDirectory("~/Content/css","*.css"));
         }
     }
 }
