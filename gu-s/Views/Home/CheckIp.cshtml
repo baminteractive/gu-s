@@ -5,7 +5,11 @@
         <h2>Check your ip</h2>
 
     <p>Your Ip is @Model.Ip</p>
-    <p>Your country is @Model.Country</p>
+        <p>Your country is @Model.Country</p>
+        @if (!String.IsNullOrEmpty(@Model.Message))
+        {
+            <p>@Model.Message</p>
+        }
     </div>
 </div>
 

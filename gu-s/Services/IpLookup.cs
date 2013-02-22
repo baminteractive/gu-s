@@ -46,6 +46,11 @@ namespace gu_s.Services
         public string Message { get; set; }
         public Country Country { get; set; }
 
+        public IpLookupResult()
+        {
+            
+        }
+
         public IpLookupResult(bool matched, string message, Country country = null)
         {
             Matched = matched;
