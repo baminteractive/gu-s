@@ -8,23 +8,22 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <header>
-        <div class="content-wrapper">
-            <div class="float-left">
-                <p class="site-title">
-                    <a href="~/">ASP.NET Web API</a></p>
-            </div>
-            <div class="float-right">
-                <nav>
-                    <ul id="menu">
-                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
-                        <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
-                    </ul>
-                </nav>
+
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner ">
+            <div class="container">
+                <a class="brand" href="#">gu-s</a>
+                <ul class="nav">
+                    <li class="active">@Html.ActionLink("Check IP", "CheckIp", "Home")</li>
+                    <li>@Html.ActionLink("API", "Index", "Help")</li>
+                </ul>
             </div>
         </div>
-    </header>
-    @RenderBody()
+    </div>
+
+    <div class="container">
+        @RenderBody()
+    </div>
 
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)

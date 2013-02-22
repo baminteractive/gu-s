@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using gu_s.Models;
+﻿using System.Web.Mvc;
+using gu_s.Services;
 using gu_s.ViewModel;
 
 namespace gu_s.Controllers
@@ -13,6 +9,28 @@ namespace gu_s.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult CheckIp()
+        {
+            var statusViewModel = new StatusViewModel();
+            var clientIp = Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+            if (string.IsNullOrEmpty(clientIp))
+            {
+                clientIp = Request.ServerVariables["REMOTE_ADDR"];
+            }
+
+            statusViewModel.Ip = clientIp;
+
+            var ipLookup = new IpLookup();
+            var result = ipLookup.LookupIp(clientIp);
+
+            if (result.Matched)
+            {
+                statusViewModel.Country = result.Country.CountryName;
+            }
+
+            return View(statusViewModel);
         }
 
         /*public ActionResult Status()

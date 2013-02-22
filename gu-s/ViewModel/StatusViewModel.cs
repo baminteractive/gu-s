@@ -7,11 +7,7 @@ namespace gu_s.ViewModel
 {
     public class StatusViewModel
     {
-        public int CountryCount { get; set; }
-
-        public StatusViewModel(int countryCount)
-        {
-            CountryCount = countryCount;
-        }
+        public string Country { get; set; }
+        public string Ip { get; set; }
     }
 }
