@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Web;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using gu_s.Models;
@@ -12,7 +11,7 @@ namespace gu_s.Services
 {
     public class MongoRepository
     {
-        private MongoCollection<Country> _countryCollection;
+        private readonly MongoCollection<Country> _countryCollection;
 
         public MongoRepository()
         {

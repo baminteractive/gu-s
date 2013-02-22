@@ -18,7 +18,7 @@ namespace gu_s.Services
 
             if (!match.Success)
             {
-                return new IpLookupResult(false, "Bad Ip");
+                return new IpLookupResult(ip,false, "Bad Ip");
             }
 
             var ipStringParts = ip.Split('.').ToList();
@@ -32,11 +32,11 @@ namespace gu_s.Services
                 var ipRange = new IpAddressRange(country.StartAddress, country.EndAddress);
                 if (ipRange.IsInRange(ip))
                 {
-                    return new IpLookupResult(true, "", country);
+                    return new IpLookupResult(ip, true, "", country);
                 }
             }
 
-            return new IpLookupResult(false, "No Match");
+            return new IpLookupResult(ip, false, "No Match");
         }
     }
 
@@ -45,14 +45,16 @@ namespace gu_s.Services
         public bool Matched { get; set; }
         public string Message { get; set; }
         public Country Country { get; set; }
+        public string Ip { get; set; }
 
         public IpLookupResult()
         {
             
         }
 
-        public IpLookupResult(bool matched, string message, Country country = null)
+        public IpLookupResult(string ip, bool matched, string message, Country country = null)
         {
+            Ip = ip;
             Matched = matched;
             Message = message;
             Country = country;
